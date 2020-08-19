@@ -9,10 +9,10 @@ pipeline {
             steps{
                 echo 'cleaning the directory..'
                 echo 'before cleaning..'
-                sh 'ssh ec2-user@3.82.109.51 ls -la'
-                sh 'ssh ec2-user@3.82.109.51 rm -rf temp_deploy'
+                sh 'ls -la'
+                sh 'rm -rf temp_deploy'
                 echo 'After cleaning..'
-                sh 'ssh ec2-user@3.82.109.51 ls -la'
+                sh 'ls -la'
             }
         }
         
