@@ -4,24 +4,17 @@ pipeline {
 
     stages {
 
-        stage("cleaning") {
+        stage("clean up") {
 
             steps{
-                echo 'cleaning the directory..'
-                echo 'before cleaning..'
-                sh 'ls -la'
-                sh 'rm -rf temp_deploy'
-                echo 'After cleaning..'
-                sh 'ls -la'
+                sh 'rm -rf dir'
             }
         }
         
         stage("build") {
 
             steps{
-                echo 'building application..'
-                echo 'creating virtual environment'
-                sh "pwd"
+                echo 'create virtual environment'
                 sh """
                     python3 -m venv pyenv
                     . pyenv/bin/activate
@@ -32,7 +25,7 @@ pipeline {
         stage("test") {
 
             steps{
-                echo 'testing the application..'
+                echo 'Test the App'
                 sh 'python3 test_emp.py'
                 
             }
@@ -40,20 +33,8 @@ pipeline {
         stage("deploy") {
 
             steps{
-                echo 'Deploying the application..'
-                echo 'removing previous deployed directory..'
-                sh 'ssh ec2-user@3.82.109.51 rm -rf temp_deploy'
-                echo 'create new deploy directory..'
-                sh 'ssh ec2-user@3.82.109.51 mkdir -p temp_deploy'
-                sh 'scp -r /var/lib/jenkins/workspace/pipeline-20954 ec2-user@3.82.109.51:/home/ec2-user/temp_deploy/'
-                echo 'After moving files into ec2 instance'
-                sh 'ssh ec2-user@3.82.109.51 ls -la'
-                
-                echo 'Running test application..'
-                sh """
-                    ssh ec2-user@3.82.109.51 python3 temp_deploy/pipeline-20954/test_emp.py
-                   """
-                
+                echo 'Deploy the App'
+                //sh 'scp -i '$WORKSPACE/20954-quantiphi.pem' -o StrictHostKeyChecking=no -r try.txt ec2-user@3.82.109.51:/tmp'
             }
         }
     }
